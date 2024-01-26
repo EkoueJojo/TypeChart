@@ -1,4 +1,4 @@
-/**
+/*
  * Project : Types Table
  * Author : EkoueJojo
  * Date : 15/11/22
@@ -7,6 +7,7 @@
 :root
 {
 	color-scheme: light dark;
+	box-sizing: border-box;
 }
 
 html, body
@@ -14,14 +15,17 @@ html, body
 	width: 100%;
 	height: 100%;
 	margin: 0;
+	user-select: none;
+	overflow: hidden;
 }
 
 header
 {
 	display: grid;
-	grid-template-columns: auto 110px;
-	grid-template-rows: max-content;
+	grid-template-columns: auto 90px;
+	grid-template-rows: 100%;
 	width: 100%;
+	height: 10%;
 }
 
 h1
@@ -30,6 +34,15 @@ h1
 	grid-column: 1 / 1;
 	text-align: center;
 	width: 100%;
+	white-space: nowrap;
+	margin: auto;
+	line-height: 1.5em;
+	font-size: 3.5vh;
+}
+
+h2, h3
+{
+	margin: 0;
 }
 
 nav
@@ -40,8 +53,11 @@ nav
 
 main
 {
+	display: grid;
+	grid-template-columns: 100%;
+	grid-template-rows: 42.5% 57.5%;
 	width: 100%;
-	height: max-content;
+	height: 90%;
 	text-align: center;
 }
 
@@ -59,7 +75,7 @@ img
 
 .DropdownButton
 {
-	width: 80%;
+	width: 100%;
 	height: 50%;
 	display: block;
 	appearance: none;
@@ -68,16 +84,19 @@ img
 	text-align: center;
 	border-radius: 5px;
 	border: solid thin darkred;
-	margin-left: auto;
-	margin-right: 0;
+	margin: 0;
 }
 
 .TypeButton
 {
 	aspect-ratio: 3 / 1;
-	width: 100%;
 	background-color: lightgray;
 	transition: background-color 0.25s;
+}
+
+.TabButton
+{
+	border: solid thin;
 }
 
 .Selected
@@ -85,9 +104,9 @@ img
 	background-color: lime;
 }
 
-.TabButton
+.TitleContainer
 {
-	border: solid thin;
+	height: 15%;
 }
 
 .AffinitiesLine
@@ -125,7 +144,6 @@ img
 {
 	height: 100%;
 	display: flex;
-	overflow-x: auto;
 }
 
 .CoverageContainer
@@ -140,28 +158,70 @@ img
 	margin: 5px;
 }
 
+.CoverageLine h3
+{
+	position: sticky;
+	top: 0;
+	z-index: 2;
+	background-color: lightblue;
+}
+
+.CoverageContainer > .TypeIcon
+{
+	height: fit-content;
+	margin: auto;
+	padding: 5px;
+}
+
 .TypeIcon
 {
 	max-width: 10vw;
 }
 
+.TypeCombo
+{
+	display: grid;
+	width: fit-content;
+	height: fit-content;
+	grid-template-columns: 33.33% 33.33% 33.33%;
+	grid-template-rows: 33.33% 33.33% 33.33%;
+	padding: 5px;
+	margin: auto;
+}
+
+.TypeCombo .TypeIcon:nth-child(odd)
+{
+	position: relative;
+	z-index: 1;
+	grid-area: 1 / 1 / span 2 / span 2;
+}
+
+.TypeCombo .TypeIcon:nth-child(even)
+{
+	position: relative;
+	grid-area: 2 / 2 / span 3 / span 3;
+}
+
 #TypesTable img
 {
 	width: 90%;
+	max-height: 2.75vh;
 	margin: auto;
 }
 
 #ButtonsContainer
 {
 	width: 100%;
-	height: 50%;
+	height: 100%;
+	grid-row: 1 / 1;
+	grid-column: 1 / 1;
 }
 
 #ButtonsContainer table
 {
-	width: 100%;
+	height: 90%;
 	border-collapse: collapse;
-	margin: 10px 0;
+	margin: auto;
 	padding: 0;
 }
 
@@ -173,8 +233,7 @@ img
 
 #ButtonsContainer td
 {
-	margin: 50px;
-	padding: max(5px);
+	padding: 5px;
 }
 
 #ResetButton
@@ -186,9 +245,16 @@ img
 
 #ResultsContainer
 {
+	grid-row: 2 / 2;
+	grid-column: 1 / 1;
 	width: 100%;
-	height: 50%;
-	padding-top: 10px;
+	height: 100%;
+}
+
+#TabButtonsContainer
+{
+	width: 100%;
+	height: 7.5%;
 }
 
 #AffinitiesSection
@@ -208,38 +274,91 @@ img
 	padding: 0;
 }
 
-@media (orientation: landscape)
+#CoverageSection
 {
-	body
+	height: 92.5%;
+}
+
+#Coverage
+{
+	height: 85%;
+	overflow-y: scroll;
+}
+
+#CoverageInfo
+{
+	width: 100%;
+	background-color: aqua;
+}
+
+@media (prefers-color-scheme: dark)
+{
+	.CoverageLine h3
 	{
-		display: flex;
-		flex-direction: column;
+		background-color: #638C99;
 	}
 
+	.TypeButton
+	{
+		background-color: darkslategray;
+	}
+
+	.TabButton
+	{
+		background-color: darkslategray;
+	}
+
+	.Selected
+	{
+		background-color: forestgreen;
+	}
+
+	#ResetButton
+	{
+		background-color: darkcyan;
+	}
+}
+
+@media (orientation: landscape)
+{
 	h1
 	{
 		grid-column: 1 / -1;
 	}
 
+	header
+	{
+		grid-template-columns: auto 190px;
+	}
+
+	nav
+	{
+		display: flex;
+	}
+
 	main
 	{
 		display: flex;
-		flex-grow: 1;
-		align-items: center;
+	}
+
+	.DropdownButton
+	{
+		height: 100%;
 	}
 
 	.AffinitiesLine .TypeIcon
 	{
 		width: 60%;
 		max-width: 10vw;
+		max-height: 10vh;
 	}
 
 	.CoverageLine
 	{
 		display: flex;
 		flex-direction: row;
-		justify-content: space-around;
-		align-items: center;
+		justify-content: flex-start;
+		border-bottom: solid thin silver;
 	}
 
 	.TypeIcon
@@ -247,20 +366,31 @@ img
 		max-width: 5vw;
 	}
 
-	#ButtonsContainer
+	.CoverageLine h3
 	{
-		width: 50%;
-		height: initial;
+		width: min-content;
+		background-color: initial;
+		align-self: flex-start;
 	}
 
 	#ResultsContainer
 	{
-		width: 50%;
 		height: initial;
 	}
 
 	#TypesTable button
 	{
-		width: 70%;
+		width: 85%;
+	}
+
+	#TypesTable img
+	{
+		max-height: 6.75vh;
+	}
+
+	#AffinitiesSection table
+	{
+		height: 85%;
+		overflow-y: scroll;
 	}
 }

@@ -1,3 +1,9 @@
+<!--
+	Project : Types Table
+	Author : EkoueJojo
+	Date : 15/11/22
+-->
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -39,19 +45,25 @@
 			<button id="ResetButton" onclick="ResetTypes()">Deselect all</button>
 		</div>
 		<div id="ResultsContainer">
-			<button id="AffinitiesButton" class="TabButton Selected" onclick="SwitchTab(false)">Affinities
-				(Defense)</button>
-			<button id="CoverageButton" class="TabButton" onclick="SwitchTab(true)">Coverage (Offense)</button>
-
+			<div id="TabButtonsContainer">
+				<button id="AffinitiesButton" class="TabButton Selected" onclick="SwitchTab(false)">Defense</button>
+				<button id="CoverageButton" class="TabButton" onclick="SwitchTab(true)">Attack</button>
+			</div>
 			<section id="AffinitiesSection">
-				<h2 id="AffinitiesTitle">Affinities</h2>
+				<div class="TitleContainer">
+					<h2 id="AffinitiesTitle">Defense</h2>
+				</div>
 				<table>
 					<tbody id="Affinities">
 					</tbody>
 				</table>
 			</section>
 			<section id="CoverageSection" style="display: none;">
-				<h2 id="CoverageTitle">Coverage</h2>
+				<div class="TitleContainer">
+					<h2 id="CoverageTitle">Attack</h2>
+					<label id="DoubleTypesButtonLabel" for="DoubleTypesButton">Double Types </label><input type="checkbox"
+						name="DoubleTypesButton" id="DoubleTypesButton" onclick="ShowCoverage()">
+				</div>
 				<div id="Coverage"></div>
 			</section>
 		</div>

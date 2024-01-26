@@ -1,4 +1,4 @@
-/**
+/*
  * Project : Types Table
  * Author : Jordan Folly
  * Date : 15/11/22
@@ -311,7 +311,7 @@ class Type
 	 */
 	static get SelectedTypesAffinities()
 	{
-		let newType = new Type("", {});
+		let newType = new Type("", { });
 
 		Object.keys(Type.TYPES).forEach
 			(
@@ -437,5 +437,33 @@ class Type
 	{
 		this.#names = names;
 		this.#affinities = affinities;
+	}
+
+	/**
+	 * Create a double type from two types
+	 * @param {Type} firstType
+	 * @param {Type} secondType
+	 * @returns {Type}
+	 */
+	static Combine(firstType, secondType)
+	{
+		let doubleType = new Type({ }, { });
+
+		for (let nameLanguage in firstType.Names)
+		{
+			doubleType.Names[nameLanguage] = firstType.Names[nameLanguage] + " / " + secondType.Names[nameLanguage];
+		}
+
+		for (let typeName in Type.TYPES)
+		{
+			let multiplier = (firstType.Affinities[typeName] ?? 1) * (secondType.Affinities[typeName] ?? 1);
+
+			if (multiplier != 1)
+			{
+				doubleType.Affinities[typeName] = multiplier;
+			}
+		}
+
+		return doubleType;
 	}
 }

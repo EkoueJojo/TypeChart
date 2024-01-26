@@ -1,4 +1,4 @@
-/**
+/*
  * Project : Types Table
  * Author : EkoueJojo
  * Date : 15/11/22
@@ -78,6 +78,7 @@ function ResetTypes()
 	}
 
 	ShowAffinitiesAndCoverage();
+	CreateNumbers({});
 }
 
 /**
@@ -109,16 +110,23 @@ function SwitchTab(toCoverage)
  */
 function ShowAffinitiesAndCoverage()
 {
+	ShowAffinities();
+	ShowCoverage();
+}
+
+/**
+ * Show the affinities of the selected types on the page
+ */
+function ShowAffinities()
+{
 	document.getElementById("Affinities").innerHTML = "";
-	document.getElementById("Coverage").innerHTML = "";
+
+	let nbAffinities = {};
 
 	if (Type.selectedTypesNames.length > 0)
 	{
 		let affinities = Type.SelectedTypesAffinities;
-		let coverage = Type.SelectedTypesCoverage;
-
 		let affinitiesIcons = [];
-		let coverageIcons = [];
 
 		Object.keys(Type.TYPES).forEach
 			(
@@ -127,19 +135,15 @@ function ShowAffinitiesAndCoverage()
 					if (!(affinities[typeName] in affinitiesIcons))
 					{
 						affinitiesIcons[affinities[typeName]] = [];
+						nbAffinities[affinities[typeName]] = 0;
 					}
 
-					if (!(coverage[typeName] in coverageIcons))
-					{
-						coverageIcons[coverage[typeName]] = [];
-					}
-
+					nbAffinities[affinities[typeName]]++;
 					affinitiesIcons[affinities[typeName]].push(CreateTypeIcon(typeName));
-					coverageIcons[coverage[typeName]].push(CreateTypeIcon(typeName));
 				}
 			);
 
-		Object.keys(affinitiesIcons).sort().forEach
+		Object.keys(affinitiesIcons).sort((a, b) => b - a).forEach
 			(
 				multiplier =>
 				{
@@ -152,8 +156,76 @@ function ShowAffinitiesAndCoverage()
 						);
 				}
 			);
+	}
+}
 
-		Object.keys(coverageIcons).sort().forEach
+/**
+ * Show the coverage of the selected types on the page
+ */
+function ShowCoverage()
+{
+	document.getElementById("Coverage").innerHTML = "";
+
+	let nbCoverages = {};
+
+	if (Type.selectedTypesNames.length > 0)
+	{
+		let coverage = Type.SelectedTypesCoverage;
+		let coverageIcons = [];
+		let typesNames = Object.keys(Type.TYPES);
+
+		typesNames.forEach
+			(
+				typeName =>
+				{
+					if (!(coverage[typeName] in coverageIcons))
+					{
+						coverageIcons[coverage[typeName]] = [];
+						nbCoverages[coverage[typeName]] = 0;
+					}
+
+					nbCoverages[coverage[typeName]]++;
+					coverageIcons[coverage[typeName]].push(CreateTypeIcon(typeName));
+				}
+			);
+
+
+		if (document.getElementById("DoubleTypesButton").checked)
+		{
+			for (let firstTypeIndex = 0; firstTypeIndex < typesNames.length; firstTypeIndex++)
+			{
+				for (let secondTypeIndex = firstTypeIndex + 1; secondTypeIndex < typesNames.length; secondTypeIndex++)
+				{
+					let doubleType = Type.Combine(Type.TYPES[typesNames[firstTypeIndex]], Type.TYPES[typesNames[secondTypeIndex]]);
+
+					let bestMultiplier = 0;
+
+					Type.selectedTypesNames.forEach
+					(
+						typeName =>
+						{
+							let multiplier = doubleType.Affinities[typeName] ?? 1;
+
+							if (multiplier > bestMultiplier)
+							{
+								bestMultiplier = multiplier;
+							}
+						}
+					)
+
+					if (!(bestMultiplier in coverageIcons))
+					{
+						nbCoverages[bestMultiplier] = 0;
+						coverageIcons[bestMultiplier] = [];
+					}
+
+					nbCoverages[bestMultiplier]++;
+					coverageIcons[bestMultiplier].push(CreateTypeComboIcons(typesNames[firstTypeIndex], typesNames[secondTypeIndex]));
+				}
+			}
+		}
+
+		Object.keys(coverageIcons).sort((a, b) => b - a).forEach
 			(
 				multiplier =>
 				{
@@ -216,11 +288,13 @@ function UpdateAllText()
 
 	document.getElementById("ResetButton").innerText = { "English": "Deselect all", "French": "Tout désélectionner" }[GetLanguage()];
 
-	document.getElementById("AffinitiesButton").innerText = { "English": "Affinities (Defense)", "French": "Affinités (Défense)" }[GetLanguage()];
-	document.getElementById("CoverageButton").innerText = { "English": "Coverage (Offense)", "French": "Couverture (Offense)" }[GetLanguage()];
+	document.getElementById("AffinitiesButton").innerText = { "English": "Defense", "French": "Défense" }[GetLanguage()];
+	document.getElementById("CoverageButton").innerText = { "English": "Attack", "French": "Attaque" }[GetLanguage()];
 
-	document.getElementById("AffinitiesTitle").innerText = { "English": "Affinities", "French": "Affinités" }[GetLanguage()];
-	document.getElementById("CoverageTitle").innerText = { "English": "Coverage", "French": "Couverture" }[GetLanguage()];
+	document.getElementById("DoubleTypesButtonLabel").innerText = { "English": "Double Types ", "French": "Doubles Types " }[GetLanguage()];
+
+	document.getElementById("AffinitiesTitle").innerText = { "English": "Defense", "French": "Défense" }[GetLanguage()];
+	document.getElementById("CoverageTitle").innerText = { "English": "Attack", "French": "Attaque" }[GetLanguage()];
 }
 
 /**
@@ -323,6 +397,9 @@ function CreateCoverageLine(multiplier, typesIcons)
 
 	switch (multiplier)
 	{
+		case "4":
+			multiplierTitle.innerText = { English: "Doubly super effective against", French: "Doublement super efficace contre" }[GetLanguage()];
+			break;
 		case "2":
 			multiplierTitle.innerText = { English: "Super effective against", French: "Super efficace contre" }[GetLanguage()];
 			break;
@@ -332,11 +409,15 @@ function CreateCoverageLine(multiplier, typesIcons)
 		case "0.5":
 			multiplierTitle.innerText = { English: "Not very effective against", French: "Pas très efficace contre" }[GetLanguage()];
 			break;
+		case "0.25":
+			multiplierTitle.innerText = { English: "Very little effective against", French: "Très peu efficace contre" }[GetLanguage()];
+			break;
 		case "0":
 			multiplierTitle.innerText = { English: "Ineffective against", French: "Inefficace contre" }[GetLanguage()];
 			break;
 	}
 
+	multiplierTitle.innerText += ` (${typesIcons.length})`;
 	multiplierTitle.className = "CoverageLineMultiplier";
 
 	typesContainer.className = "CoverageContainer";
@@ -358,7 +439,7 @@ function CreateCoverageLine(multiplier, typesIcons)
 /**
  * Create an icon of a type
  * @param {string} typeName English name of the type
- * @returns {HTMLImageElement} img HTML Object
+ * @returns {HTMLImageElement} html img with the icon
  */
 function CreateTypeIcon(typeName)
 {
@@ -371,6 +452,26 @@ function CreateTypeIcon(typeName)
 	icon.title = translatedTypeName;
 
 	return icon;
+}
+
+/**
+ * Create a group of two icons representing a double type
+ * @param {string} firstTypeName English name of the first type
+ * @param {string} secondTypeName English name of the seoncd type
+ * @returns {HTMLDivElement} html div with two child icons
+ */
+function CreateTypeComboIcons(firstTypeName, secondTypeName)
+{
+	let iconContainer = document.createElement("div");
+	iconContainer.className = "TypeCombo";
+
+	let firstIcon = CreateTypeIcon(firstTypeName);
+	let secondIcon = CreateTypeIcon(secondTypeName);
+
+	iconContainer.appendChild(firstIcon);
+	iconContainer.appendChild(secondIcon);
+
+	return iconContainer;
 }
 
 /**

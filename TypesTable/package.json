@@ -1,7 +1,7 @@
 {
 	"name": "ch.ekouejojo.typestable",
 	"displayName": "Types Table",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "Calculator for the affinities and coverage of pokémon",
 	"main": "view.js",
 	"scripts": {
@@ -16,7 +16,9 @@
 		"platforms": [
 			"android"
 		],
-		"plugins": {}
+		"plugins": {
+			"es6-promise-plugin": {}
+		}
 	},
 	"devDependencies": {
 		"cordova-android": "^11.0.0",
