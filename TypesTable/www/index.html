@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+	<meta name="color-scheme" content="light dark">
+	<link rel="stylesheet" href="./css/index.css" type="text/css">
+	<title>Types Table</title>
+</head>
+
+<body>
+	<header>
+		<h1 id="AppTitle">Types Table</h1>
+		<nav>
+			<select id="LanguagesButton" class="DropdownButton" onchange="SetLanguage(value)">
+				<option id="LanguagesButtonTitle" disabled selected hidden>Languages</option>
+				<option value="English">English</option>
+				<option value="French">Français</option>
+			</select>
+			<select id="IconStyleButton" class="DropdownButton" onchange="SetIconStyleGame(value)">
+				<option id="IconStyleButtonTitle" disabled selected hidden>Icon style</option>
+				<option id="LgpeStyleOption" value="LGPE">Let's Go Pikachu and Let's Go Eevee</option>
+				<option id="SwshStyleOption" value="SwSh">Sword and Shield</option>
+				<option id="BdspStyleOption" value="BDSP">Brilliant Diamond and Shining Pearl</option>
+				<option id="LaStyleOption" value="LA">Legends : Arceus</option>
+				<option id="SvStyleOption" value="SV">Scarlet and Violet</option>
+			</select>
+		</nav>
+	</header>
+	<main>
+		<div id="ButtonsContainer">
+			<table>
+				<tbody id="TypesTable"></tbody>
+			</table>
+			<button id="ResetButton" onclick="ResetTypes()">Deselect all</button>
+		</div>
+		<div id="ResultsContainer">
+			<button id="AffinitiesButton" class="TabButton Selected" onclick="SwitchTab(false)">Affinities
+				(Defense)</button>
+			<button id="CoverageButton" class="TabButton" onclick="SwitchTab(true)">Coverage (Offense)</button>
+
+			<section id="AffinitiesSection">
+				<h2 id="AffinitiesTitle">Affinities</h2>
+				<table>
+					<tbody id="Affinities">
+					</tbody>
+				</table>
+			</section>
+			<section id="CoverageSection" style="display: none;">
+				<h2 id="CoverageTitle">Coverage</h2>
+				<div id="Coverage"></div>
+			</section>
+		</div>
+	</main>
+	<script src="./cordova.js"></script>
+	<script src="./js/Type.js"></script>
+	<script src="./js/view.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,266 @@
+/**
+ * Project : Types Table
+ * Author : EkoueJojo
+ * Date : 15/11/22
+ */
+
+:root
+{
+	color-scheme: light dark;
+}
+
+html, body
+{
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+
+header
+{
+	display: grid;
+	grid-template-columns: auto 110px;
+	grid-template-rows: max-content;
+	width: 100%;
+}
+
+h1
+{
+	grid-row: 1 / 1;
+	grid-column: 1 / 1;
+	text-align: center;
+	width: 100%;
+}
+
+nav
+{
+	grid-row: 1 / 1;
+	grid-column: -2 / -2;
+}
+
+main
+{
+	width: 100%;
+	height: max-content;
+	text-align: center;
+}
+
+button
+{
+	border: none;
+	border-radius: 5px;
+	font-size: medium;
+}
+
+img
+{
+	display: block;
+}
+
+.DropdownButton
+{
+	width: 80%;
+	height: 50%;
+	display: block;
+	appearance: none;
+	color: white;
+	background-color: crimson;
+	text-align: center;
+	border-radius: 5px;
+	border: solid thin darkred;
+	margin-left: auto;
+	margin-right: 0;
+}
+
+.TypeButton
+{
+	aspect-ratio: 3 / 1;
+	width: 100%;
+	background-color: lightgray;
+	transition: background-color 0.25s;
+}
+
+.Selected
+{
+	background-color: lime;
+}
+
+.TabButton
+{
+	border: solid thin;
+}
+
+.AffinitiesLine
+{
+	width: 100%;
+}
+
+.AffinitiesLine .TypeIcon
+{
+	width: 100%;
+	height: 100%;
+	margin: auto;
+}
+
+.AffinitiesLineMultiplier
+{
+	height: 100%;
+	color: white;
+	border: solid 2px darkred;
+	background-color: crimson;
+	padding: 2px;
+	padding-top: initial;
+	padding-bottom: initial;
+	margin: 0;
+	margin-right: 5px;
+}
+
+.AffinitiesLineMultiplier h3
+{
+	width: max-content;
+	margin: auto;
+}
+
+.AffinitiesContainer
+{
+	height: 100%;
+	display: flex;
+	overflow-x: auto;
+}
+
+.CoverageContainer
+{
+	justify-content: center;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.CoverageLine .TypeIcon
+{
+	margin: 5px;
+}
+
+.TypeIcon
+{
+	max-width: 10vw;
+}
+
+#TypesTable img
+{
+	width: 90%;
+	margin: auto;
+}
+
+#ButtonsContainer
+{
+	width: 100%;
+	height: 50%;
+}
+
+#ButtonsContainer table
+{
+	width: 100%;
+	border-collapse: collapse;
+	margin: 10px 0;
+	padding: 0;
+}
+
+#ButtonsContainer tbody
+{
+	width: 100%;
+	height: 100%;
+}
+
+#ButtonsContainer td
+{
+	margin: 50px;
+	padding: max(5px);
+}
+
+#ResetButton
+{
+	background-color: dodgerblue;
+	color: white;
+	text-transform: uppercase;
+}
+
+#ResultsContainer
+{
+	width: 100%;
+	height: 50%;
+	padding-top: 10px;
+}
+
+#AffinitiesSection
+{
+	width: 100%;
+	height: fit-content;
+}
+
+#AffinitiesSection table
+{
+	width: 100%;
+	border-spacing: 5px;
+}
+
+#AffinitiesSection td
+{
+	padding: 0;
+}
+
+@media (orientation: landscape)
+{
+	body
+	{
+		display: flex;
+		flex-direction: column;
+	}
+
+	h1
+	{
+		grid-column: 1 / -1;
+	}
+
+	main
+	{
+		display: flex;
+		flex-grow: 1;
+		align-items: center;
+	}
+
+	.AffinitiesLine .TypeIcon
+	{
+		width: 60%;
+		max-width: 10vw;
+	}
+
+	.CoverageLine
+	{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		align-items: center;
+	}
+
+	.TypeIcon
+	{
+		max-width: 5vw;
+	}
+
+	#ButtonsContainer
+	{
+		width: 50%;
+		height: initial;
+	}
+
+	#ResultsContainer
+	{
+		width: 50%;
+		height: initial;
+	}
+
+	#TypesTable button
+	{
+		width: 70%;
+	}
+}
