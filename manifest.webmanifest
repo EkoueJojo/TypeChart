@@ -2,7 +2,7 @@
 	"name": "Types Tables",
 	"theme_color": "#dc143c",
 	"background_color": "#8b0000",
-	"display": "fullscreen",
+	"display": "standalone",
 	"orientation": "portrait",
 	"scope": "./",
 	"start_url": "./index.html",
