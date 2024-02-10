@@ -1,7 +1,7 @@
 {
 	"name": "Types Tables",
 	"theme_color": "#dc143c",
-	"background_color": "#8b0000",
+	"background_color": "#dc143c",
 	"display": "standalone",
 	"orientation": "portrait",
 	"scope": "./",
