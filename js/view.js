@@ -352,8 +352,7 @@ function CreateAffinityLines(multiplier, typesIcons)
 	let multiplierTitle = document.createElement("h3");
 	let multiplierContainer = document.createElement("th");
 
-	multiplierTitle.innerText = "× ";
-	multiplierTitle.innerText += multiplier >= 1 || multiplier == 0 ? multiplier : "1 / " + 1 / multiplier;
+	multiplierTitle.innerText += multiplier >= 1 || multiplier == 0 ? "× " + multiplier : "÷ " + 1 / multiplier;
 
 	multiplierContainer.rowSpan = numberOfLines;
 	multiplierContainer.className = "AffinitiesLineMultiplier";

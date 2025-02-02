@@ -55,7 +55,7 @@ main
 {
 	display: grid;
 	grid-template-columns: 100%;
-	grid-template-rows: 42.5% 57.5%;
+	grid-template-rows: 52% 48%;
 	width: 100%;
 	height: 90%;
 	text-align: center;
@@ -89,7 +89,6 @@ img
 
 .TypeButton
 {
-	aspect-ratio: 3 / 1;
 	background-color: lightgray;
 	transition: background-color 0.25s;
 }
@@ -112,13 +111,6 @@ img
 .AffinitiesLine
 {
 	width: 100%;
-}
-
-.AffinitiesLine .TypeIcon
-{
-	width: 100%;
-	height: 100%;
-	margin: auto;
 }
 
 .AffinitiesLineMultiplier
@@ -175,7 +167,8 @@ img
 
 .TypeIcon
 {
-	max-width: 10vw;
+	width: 10vw;
+	max-width: 50px;
 }
 
 .TypeCombo
@@ -202,10 +195,19 @@ img
 	grid-area: 2 / 2 / span 3 / span 3;
 }
 
+#TypesTable tr
+{
+	height: calc(100% / 6);
+}
+
+#TypesTable button
+{
+	padding: 5px;
+}
+
 #TypesTable img
 {
-	width: 90%;
-	max-height: 2.75vh;
+	max-width: min(150px, 15vw);
 	margin: auto;
 }
 
@@ -233,7 +235,8 @@ img
 
 #ButtonsContainer td
 {
-	padding: 5px;
+	width: 33.33%;
+	padding: 3px;
 }
 
 #ResetButton
@@ -260,7 +263,7 @@ img
 #AffinitiesSection
 {
 	width: 100%;
-	height: fit-content;
+	height: 92.5%;
 }
 
 #AffinitiesSection table
@@ -274,6 +277,13 @@ img
 	padding: 0;
 }
 
+#AffinitiesContainer
+{
+	width: 100%;
+	height: 85%;
+	overflow-y: auto;
+}
+
 #CoverageSection
 {
 	height: 92.5%;
@@ -282,7 +292,7 @@ img
 #Coverage
 {
 	height: 85%;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 #CoverageInfo
@@ -348,9 +358,8 @@ img
 
 	.AffinitiesLine .TypeIcon
 	{
-		width: 60%;
+		width: 75%;
 		max-width: 10vw;
-		max-height: 10vh;
 	}
 
 	.CoverageLine
@@ -359,11 +368,6 @@ img
 		flex-direction: row;
 		justify-content: flex-start;
 		border-bottom: solid thin silver;
-	}
-
-	.TypeIcon
-	{
-		max-width: 5vw;
 	}
 
 	.CoverageLine h3
@@ -378,19 +382,9 @@ img
 		height: initial;
 	}
 
-	#TypesTable button
-	{
-		width: 85%;
-	}
-
-	#TypesTable img
-	{
-		max-height: 6.75vh;
-	}
-
 	#AffinitiesSection table
 	{
 		height: 85%;
-		overflow-y: scroll;
+		overflow-y: auto;
 	}
 }
