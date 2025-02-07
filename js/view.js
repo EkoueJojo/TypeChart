@@ -270,15 +270,44 @@ function SetLanguage(name)
 }
 
 /**
+ * Open the dialog containing the settings
+ */
+function OpenSettings()
+{
+	document.getElementById("Settings").showModal();
+}
+
+/**
+ * Close the dialog containing the settings
+ */
+function CloseSettings()
+{
+	document.getElementById("Settings").close();
+}
+
+/**
+ * Close the dialog when clicking around it
+ * @param {Event} event
+ */
+function CloseSettingsViaModal(event)
+{
+	if (event.target === document.getElementById("Settings")) CloseSettings();
+}
+
+/**
  * Change the texts in the application to match the chosen language
  */
 function UpdateAllText()
 {
 	document.getElementsByTagName("title")[0].innerText = { "English": "Types Table", "French": "Table des Types" }[GetLanguage()];
 	document.getElementById("AppTitle").innerText = { "English": "Types Table", "French": "Table des Types" }[GetLanguage()];
+	document.getElementById("SettingsTitle").innerText = { "English": "Settings", "French": "Paramètres" }[GetLanguage()];
 
 	document.getElementById("LanguagesButtonTitle").innerText = { "English": "Languages", "French": "Langues" }[GetLanguage()];
 	document.getElementById("IconStyleButtonTitle").innerText = { "English": "Icon style", "French": "Style d'icônes" }[GetLanguage()];
+
+	document.getElementById("LanguagesButton").value = GetLanguage();
+	document.getElementById("IconStyleButton").value = GetIconStyleGame();
 
 	document.getElementById("LgpeStyleOption").innerText = { "English": "Let's Go Pikachu and Let's Go Eevee", "French": "Let's Go Pikachu et Let's Go Évoli" }[GetLanguage()];
 	document.getElementById("SwshStyleOption").innerText = { "English": "Sword and Shield", "French": "Épée et Bouclier" }[GetLanguage()];

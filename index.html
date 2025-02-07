@@ -29,19 +29,26 @@
 	<header>
 		<h1 id="AppTitle">Types Table</h1>
 		<nav>
-			<select id="LanguagesButton" class="DropdownButton" onchange="SetLanguage(value)">
-				<option id="LanguagesButtonTitle" disabled selected hidden>Languages</option>
-				<option value="English">English</option>
-				<option value="French">Français</option>
-			</select>
-			<select id="IconStyleButton" class="DropdownButton" onchange="SetIconStyleGame(value)">
-				<option id="IconStyleButtonTitle" disabled selected hidden>Icon style</option>
-				<option id="LgpeStyleOption" value="LGPE">Let's Go Pikachu and Let's Go Eevee</option>
-				<option id="SwshStyleOption" value="SwSh">Sword and Shield</option>
-				<option id="BdspStyleOption" value="BDSP">Brilliant Diamond and Shining Pearl</option>
-				<option id="LaStyleOption" value="LA">Legends : Arceus</option>
-				<option id="SvStyleOption" value="SV">Scarlet and Violet</option>
-			</select>
+			<form method="dialog">
+				<button id="SettingsButton" onclick="OpenSettings()"><span>⚙️</span></button>
+			</form>
+			<dialog id="Settings" onclick="CloseSettingsViaModal(event)">
+			<button class="CloseButton" onclick="CloseSettings()">×</button>
+				<div class="ModalContent">
+					<h2 id="SettingsTitle">Settings</h2>
+					<p><label id="LanguagesButtonTitle">Languages : <p><select id="LanguagesButton" class="DropdownButton" onchange="SetLanguage(value)">
+						<option value="English">English</option>
+						<option value="French">Français</option>
+					</select></p></label></p>
+					<p><label id="IconStyleButtonTitle">Icon style : <p><select id="IconStyleButton" class="DropdownButton" onchange="SetIconStyleGame(value)">
+						<option id="LgpeStyleOption" value="LGPE">Let's Go Pikachu and Let's Go Eevee</option>
+						<option id="SwshStyleOption" value="SwSh">Sword and Shield</option>
+						<option id="BdspStyleOption" value="BDSP">Brilliant Diamond and Shining Pearl</option>
+						<option id="LaStyleOption" value="LA">Legends : Arceus</option>
+						<option id="SvStyleOption" value="SV">Scarlet and Violet</option>
+					</select></p></label></p>
+				</div>
+			</dialog>
 		</nav>
 	</header>
 	<main>

@@ -8,6 +8,11 @@
 {
 	color-scheme: light dark;
 	box-sizing: border-box;
+	--primaryColor: crimson;
+	--darkPrimaryColor: darkred;
+	--accentColor: lightskyblue;
+	--selectedColor: lime;
+	--grayColor: lightgray;
 }
 
 html, body
@@ -22,7 +27,7 @@ html, body
 header
 {
 	display: grid;
-	grid-template-columns: auto 90px;
+	grid-template-columns: auto 3em;
 	grid-template-rows: 100%;
 	width: 100%;
 	height: 10%;
@@ -43,12 +48,29 @@ h1
 h2, h3
 {
 	margin: 0;
+	text-align: center;
 }
 
 nav
 {
 	grid-row: 1 / 1;
 	grid-column: -2 / -2;
+}
+
+form
+{
+	width: 100%;
+	height: 100%;
+}
+
+dialog
+{
+	padding: 0;
+}
+
+dialog::backdrop
+{
+	background: rgba(0, 0, 0, 0.4);
 }
 
 main
@@ -73,23 +95,34 @@ img
 	display: block;
 }
 
+.ModalContent
+{
+	width: 100%;
+	height: 100%;
+	padding: 1em;
+	box-sizing: border-box;
+}
+
+.CloseButton
+{
+	float: right;
+	background-color: transparent;
+	margin: 2px;
+}
+
+.CloseButton:hover
+{
+	background-color: var(--grayColor);
+}
+
 .DropdownButton
 {
 	width: 100%;
-	height: 50%;
-	display: block;
-	appearance: none;
-	color: white;
-	background-color: crimson;
-	text-align: center;
-	border-radius: 5px;
-	border: solid thin darkred;
-	margin: 0;
 }
 
 .TypeButton
 {
-	background-color: lightgray;
+	background-color: var(--grayColor);
 	transition: background-color 0.25s;
 }
 
@@ -100,7 +133,7 @@ img
 
 .Selected
 {
-	background-color: lime;
+	background-color: var(--selectedColor);
 }
 
 .TitleContainer
@@ -117,8 +150,8 @@ img
 {
 	height: 100%;
 	color: white;
-	border: solid 2px darkred;
-	background-color: crimson;
+	border: solid 2px var(--darkPrimaryColor);
+	background-color: var(--primaryColor);
 	padding: 2px;
 	padding-top: initial;
 	padding-bottom: initial;
@@ -155,7 +188,7 @@ img
 	position: sticky;
 	top: 0;
 	z-index: 2;
-	background-color: lightblue;
+	background-color: var(--accentColor);
 }
 
 .CoverageContainer > .TypeIcon
@@ -193,6 +226,32 @@ img
 {
 	position: relative;
 	grid-area: 2 / 2 / span 3 / span 3;
+}
+
+#SettingsButton
+{
+	width: 100%;
+	height: 100%;
+	display: block;
+	appearance: none;
+	color: white;
+	background-color: var(--primaryColor);
+	text-align: center;
+	border-radius: 5px;
+	border: solid thin var(--darkPrimaryColor);
+	margin: 0;
+}
+
+#SettingsButton span
+{
+	aspect-ratio: 1 / 1;
+	display: inline-block;
+	transition: transform 0.25s ease-in-out;
+}
+
+#SettingsButton span:hover
+{
+	transform: rotate(90deg);
 }
 
 #TypesTable tr
@@ -241,8 +300,7 @@ img
 
 #ResetButton
 {
-	background-color: dodgerblue;
-	color: white;
+	background-color: var(--accentColor);
 	text-transform: uppercase;
 }
 
@@ -295,37 +353,13 @@ img
 	overflow-y: auto;
 }
 
-#CoverageInfo
-{
-	width: 100%;
-	background-color: aqua;
-}
-
 @media (prefers-color-scheme: dark)
 {
-	.CoverageLine h3
+	:root
 	{
-		background-color: #638C99;
-	}
-
-	.TypeButton
-	{
-		background-color: darkslategray;
-	}
-
-	.TabButton
-	{
-		background-color: darkslategray;
-	}
-
-	.Selected
-	{
-		background-color: forestgreen;
-	}
-
-	#ResetButton
-	{
-		background-color: darkcyan;
+		--accentColor: darkcyan;
+		--selectedColor: forestgreen;
+		--grayColor: darkslategray;
 	}
 }
 
@@ -334,11 +368,6 @@ img
 	h1
 	{
 		grid-column: 1 / -1;
-	}
-
-	header
-	{
-		grid-template-columns: auto 190px;
 	}
 
 	nav
