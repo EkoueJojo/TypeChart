@@ -36,16 +36,21 @@
 			<button class="CloseButton" onclick="CloseSettings()">×</button>
 				<div class="ModalContent">
 					<h2 id="SettingsTitle">Settings</h2>
-					<p><label id="LanguagesButtonTitle">Languages : <p><select id="LanguagesButton" class="DropdownButton" onchange="SetLanguage(value)">
+					<p><label id="LanguagesButtonTitle" for="LanguagesButton">Languages : <p><select id="LanguagesButton" name="LanguagesButton" class="DropdownButton" onchange="SetLanguage(value)">
 						<option value="English">English</option>
 						<option value="French">Français</option>
 					</select></p></label></p>
-					<p><label id="IconStyleButtonTitle">Icon style : <p><select id="IconStyleButton" class="DropdownButton" onchange="SetIconStyleGame(value)">
+					<p><label id="IconStyleButtonTitle" for="IconStyleButton">Icon style : <p><select id="IconStyleButton" name="IconStyleButton" class="DropdownButton" onchange="SetIconStyleGame(value)">
 						<option id="LgpeStyleOption" value="LGPE">Let's Go Pikachu and Let's Go Eevee</option>
 						<option id="SwshStyleOption" value="SwSh">Sword and Shield</option>
 						<option id="BdspStyleOption" value="BDSP">Brilliant Diamond and Shining Pearl</option>
 						<option id="LaStyleOption" value="LA">Legends : Arceus</option>
 						<option id="SvStyleOption" value="SV">Scarlet and Violet</option>
+					</select></p></label></p>
+					<p><label id="ThemeButtonTitle" for="ThemeButton">Theme : <p><select id="ThemeButton" name="ThemeButton" class="DropdownButton" onchange="SetTheme(value)">
+						<option id="AutoThemeOption" value="auto">Auto</option>
+						<option id="LightThemeOption" value="light">Light</option>
+						<option id="DarkThemeOption" value="dark">Dark</option>
 					</select></p></label></p>
 				</div>
 			</dialog>

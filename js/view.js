@@ -303,11 +303,13 @@ function UpdateAllText()
 	document.getElementById("AppTitle").innerText = { "English": "Types Table", "French": "Table des Types" }[GetLanguage()];
 	document.getElementById("SettingsTitle").innerText = { "English": "Settings", "French": "Paramètres" }[GetLanguage()];
 
-	document.getElementById("LanguagesButtonTitle").innerText = { "English": "Languages", "French": "Langues" }[GetLanguage()];
-	document.getElementById("IconStyleButtonTitle").innerText = { "English": "Icon style", "French": "Style d'icônes" }[GetLanguage()];
+	document.getElementById("LanguagesButtonTitle").innerText = { "English": "Languages : ", "French": "Langues : " }[GetLanguage()];
+	document.getElementById("IconStyleButtonTitle").innerText = { "English": "Icon style : ", "French": "Style d'icônes : " }[GetLanguage()];
+	document.getElementById("ThemeButtonTitle").innerText = { "English": "Theme : ", "French": "Thème : " }[GetLanguage()];
 
 	document.getElementById("LanguagesButton").value = GetLanguage();
 	document.getElementById("IconStyleButton").value = GetIconStyleGame();
+	document.getElementById("ThemeButton").value = GetTheme();
 
 	document.getElementById("LgpeStyleOption").innerText = { "English": "Let's Go Pikachu and Let's Go Eevee", "French": "Let's Go Pikachu et Let's Go Évoli" }[GetLanguage()];
 	document.getElementById("SwshStyleOption").innerText = { "English": "Sword and Shield", "French": "Épée et Bouclier" }[GetLanguage()];
@@ -350,6 +352,25 @@ function SetIconStyleGame(name)
 }
 
 /**
+ * Get the selected page theme
+ * @returns {string} name Which theme it should use
+ */
+function GetTheme()
+{
+	return localStorage.getItem("Theme") ?? "auto";
+}
+
+/**
+ * Set the page theme to light, dark or automatic (system)
+ * @param {string} name Which theme it should use
+ */
+function SetTheme(name)
+{
+	localStorage.setItem("Theme", name);
+	ApplyTheme(name);
+}
+
+/**
  * Change the images on the buttons to match the chosen language and icon style and language
  */
 function UpdateButtonTypes()
@@ -361,6 +382,46 @@ function UpdateButtonTypes()
 			document.getElementById(typeName + "NameImage").src = GetTypeImageLink(typeName);
 			document.getElementById(typeName + "NameImage").alt = Type.TYPES[typeName].Names[GetLanguage()];
 			document.getElementById(typeName + "NameImage").title = Type.TYPES[typeName].Names[GetLanguage()];
+		}
+	}
+}
+
+/**
+ * Update the page with the selected theme
+ *
+ * Taken from stackoverflow : {@link https://stackoverflow.com/a/75124760}
+ */
+function ApplyTheme()
+{
+	let scheme = GetTheme();
+
+	for (var s = 0; s < document.styleSheets.length; s++)
+	{
+		for (var i = 0; i < document.styleSheets[s].cssRules.length; i++)
+		{
+			rule = document.styleSheets[s].cssRules[i];
+
+			if (rule && rule.media && rule.media.mediaText.includes("prefers-color-scheme"))
+			{
+				switch (scheme)
+				{
+					case "light":
+						rule.media.appendMedium("original-prefers-color-scheme");
+						if (rule.media.mediaText.includes("light")) rule.media.deleteMedium("(prefers-color-scheme: light)");
+						if (rule.media.mediaText.includes("dark")) rule.media.deleteMedium("(prefers-color-scheme: dark)");
+						break;
+					case "dark":
+						rule.media.appendMedium("(prefers-color-scheme: light)");
+						rule.media.appendMedium("(prefers-color-scheme: dark)");
+						if (rule.media.mediaText.includes("original")) rule.media.deleteMedium("original-prefers-color-scheme");
+						break;
+					default:
+						rule.media.appendMedium("(prefers-color-scheme: dark)");
+						if (rule.media.mediaText.includes("light")) rule.media.deleteMedium("(prefers-color-scheme: light)");
+						if (rule.media.mediaText.includes("original")) rule.media.deleteMedium("original-prefers-color-scheme");
+						break;
+				}
+			}
 		}
 	}
 }
@@ -524,3 +585,4 @@ function GetTypeIconLink(typeName)
 
 GenerateTable();
 UpdateAllText();
+ApplyTheme();

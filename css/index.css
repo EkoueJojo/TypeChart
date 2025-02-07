@@ -6,13 +6,20 @@
 
 :root
 {
-	color-scheme: light dark;
 	box-sizing: border-box;
+	--textColor: black;
+	--pageColor: white;
 	--primaryColor: crimson;
 	--darkPrimaryColor: darkred;
 	--accentColor: lightskyblue;
-	--selectedColor: lime;
+	--selectedColor: limegreen;
 	--grayColor: lightgray;
+}
+
+:root, dialog, select, option, button
+{
+	color: var(--textColor);
+	background-color: var(--pageColor);
 }
 
 html, body
@@ -65,6 +72,7 @@ form
 
 dialog
 {
+	box-sizing: border-box;
 	padding: 0;
 }
 
@@ -148,7 +156,6 @@ img
 
 .AffinitiesLineMultiplier
 {
-	height: 100%;
 	color: white;
 	border: solid 2px var(--darkPrimaryColor);
 	background-color: var(--primaryColor);
@@ -357,6 +364,8 @@ img
 {
 	:root
 	{
+		--textColor: white;
+		--pageColor: black;
 		--accentColor: darkcyan;
 		--selectedColor: forestgreen;
 		--grayColor: darkslategray;
