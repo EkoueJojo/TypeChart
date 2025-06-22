@@ -1,15 +1,15 @@
 /*
- * Project : Types Table
+ * Project : Type Chart
  * Author : EkoueJojo
  * Date : 15/11/22
  */
 
 /**
- * Create a table and add it in the tbody named "TypesTable"
+ * Create a table and add it in the tbody named "TypeChart"
  */
 function GenerateTable()
 {
-	let table = document.getElementById("TypesTable");
+	let table = document.getElementById("TypeChart");
 
 	table.innerHTML = "";
 
@@ -51,6 +51,43 @@ function GenerateTable()
 	}
 }
 
+function GenerateSpecialOptions()
+{
+	let container = document.getElementById("SpecialAttributesContainer");
+
+	let optionsContainer = document.createElement("section");
+
+	let specialMovesTitle = document.createElement("h3");
+	specialMovesTitle.id = "SpecialMovesTitle";
+	specialMovesTitle.innerText = { "English": "Special Type Moves", "French": "Capacités à type spécial" }[GetLanguage()];
+	specialMovesTitle.title = { "English": "Moves that have specific interactions with the type chart (only affect the coverage)", "French": "Capacités qui ont des intéractions particulières avec la table des types (affectent uniquement la couverture offensive)"}[GetLanguage()];
+	optionsContainer.appendChild(specialMovesTitle);
+
+	Object.keys(SpecialMove.TYPES).forEach
+	(
+		specialMoveName =>
+		{
+			let move = SpecialMove.TYPES[specialMoveName];
+			let line = document.createElement("p");
+			let label = document.createElement("label");
+			label.innerText =  move.Names[GetLanguage()];
+			label.className = "TypeAffectingAttributeCheckbox";
+
+			let checkbox = document.createElement("input");
+			checkbox.id = move.Names["English"] + "Checkbox";
+			checkbox.type = "checkbox";
+
+			checkbox.addEventListener("change", function () { SelectSpecialMove(specialMoveName) });
+
+			label.appendChild(checkbox);
+			line.appendChild(label);
+			optionsContainer.appendChild(line);
+		}
+	);
+
+	container.appendChild(optionsContainer);
+}
+
 /**
  * Activate or deactivate a type button and the corresponding type
  * @param {string} typeName
@@ -62,6 +99,19 @@ function SelectType(typeName)
 	type.Selected = !type.Selected;
 
 	ShowAffinitiesAndCoverage();
+}
+
+/**
+ * Activate or deactivate a special move button and the corresponding special move
+ * @param {string} specialMoveName
+ */
+function SelectSpecialMove(specialMoveName)
+{
+	let specialMove = SpecialMove.TYPES[specialMoveName];
+
+	specialMove.Selected = !specialMove.Selected;
+
+	ShowCoverage();
 }
 
 /**
@@ -77,8 +127,15 @@ function ResetTypes()
 		}
 	}
 
+	for (const TYPE_NAME in SpecialMove.TYPES)
+	{
+		if (Object.hasOwnProperty.call(SpecialMove.TYPES, TYPE_NAME))
+		{
+			SpecialMove.TYPES[TYPE_NAME].Selected = false;
+		}
+	}
+
 	ShowAffinitiesAndCoverage();
-	CreateNumbers({});
 }
 
 /**
@@ -168,11 +225,37 @@ function ShowCoverage()
 
 	let nbCoverages = {};
 
-	if (Type.selectedTypesNames.length > 0)
+	if (Type.selectedTypesNames.length > 0 || SpecialMove.selectedTypesNames.length > 0)
 	{
 		let coverage = Type.SelectedTypesCoverage;
 		let coverageIcons = [];
 		let typesNames = Object.keys(Type.TYPES);
+
+		SpecialMove.selectedTypesNames.forEach
+		(
+			specialMoveName =>
+			{
+				let moveCoverage = SpecialMove.TYPES[specialMoveName].GetCoverage();
+
+				if (coverage == null)
+				{
+					coverage = moveCoverage;
+				}
+				else
+				{
+					typesNames.forEach
+					(
+						typeName =>
+						{
+							if (moveCoverage[typeName] > coverage[typeName])
+							{
+								coverage[typeName] = moveCoverage[typeName];
+							}
+						}
+					);
+				}
+			}
+		);
 
 		typesNames.forEach
 			(
@@ -189,29 +272,39 @@ function ShowCoverage()
 				}
 			);
 
-
 		if (document.getElementById("DoubleTypesButton").checked)
 		{
 			for (let firstTypeIndex = 0; firstTypeIndex < typesNames.length; firstTypeIndex++)
 			{
 				for (let secondTypeIndex = firstTypeIndex + 1; secondTypeIndex < typesNames.length; secondTypeIndex++)
 				{
-					let doubleType = Type.Combine(Type.TYPES[typesNames[firstTypeIndex]], Type.TYPES[typesNames[secondTypeIndex]]);
-
 					let bestMultiplier = 0;
 
 					Type.selectedTypesNames.forEach
 					(
 						typeName =>
 						{
-							let multiplier = doubleType.Affinities[typeName] ?? 1;
+							let multiplier = Type.TYPES[typeName].GetEffectiveness(typesNames[firstTypeIndex], typesNames[secondTypeIndex]);
 
 							if (multiplier > bestMultiplier)
 							{
 								bestMultiplier = multiplier;
 							}
 						}
-					)
+					);
+
+					SpecialMove.selectedTypesNames.forEach
+					(
+						specialMoveName =>
+						{
+							let multiplier = SpecialMove.TYPES[specialMoveName].GetEffectiveness(typesNames[firstTypeIndex], typesNames[secondTypeIndex]);
+
+							if (multiplier > bestMultiplier)
+							{
+								bestMultiplier = multiplier;
+							}
+						}
+					);
 
 					if (!(bestMultiplier in coverageIcons))
 					{
@@ -299,8 +392,8 @@ function CloseSettingsViaModal(event)
  */
 function UpdateAllText()
 {
-	document.getElementsByTagName("title")[0].innerText = { "English": "Types Table", "French": "Table des Types" }[GetLanguage()];
-	document.getElementById("AppTitle").innerText = { "English": "Types Table", "French": "Table des Types" }[GetLanguage()];
+	document.getElementsByTagName("title")[0].innerText = { "English": "Type Chart", "French": "Table des Types" }[GetLanguage()];
+	document.getElementById("AppTitle").innerText = { "English": "Type Chart", "French": "Table des Types" }[GetLanguage()];
 	document.getElementById("SettingsTitle").innerText = { "English": "Settings", "French": "Paramètres" }[GetLanguage()];
 
 	document.getElementById("LanguagesButtonTitle").innerText = { "English": "Languages : ", "French": "Langues : " }[GetLanguage()];
@@ -316,6 +409,22 @@ function UpdateAllText()
 	document.getElementById("BdspStyleOption").innerText = { "English": "Brilliant Diamond and Shining Pearl", "French": "Diamant Étincelant et Perle Scintillante" }[GetLanguage()];
 	document.getElementById("LaStyleOption").innerText = { "English": "Legends : Arceus", "French": "Légendes : Arceus" }[GetLanguage()];
 	document.getElementById("SvStyleOption").innerText = { "English": "Scarlet and Violet", "French": "Écarlate et Violet" }[GetLanguage()];
+
+	document.getElementById("AutoThemeOption").innerText = { "English": "Auto", "French": "Automatique" }[GetLanguage()];
+	document.getElementById("LightThemeOption").innerText = { "English": "Light", "French": "Clair" }[GetLanguage()];
+	document.getElementById("DarkThemeOption").innerText = { "English": "Dark", "French": "Sombre" }[GetLanguage()];
+
+	document.getElementById("SpecialMovesTitle").innerText = { "English": "Special Type Moves", "French": "Capacités à type spécial"}[GetLanguage()];
+	document.getElementById("SpecialMovesTitle").title = { "English": "Moves that have specific interactions with the type chart (only affect the coverage)", "French": "Capacités qui ont des intéractions particulières avec la table des types (affectent uniquement la couverture offensive)"}[GetLanguage()];
+
+	Object.keys(SpecialMove.TYPES).forEach
+	(
+		specialMoveName =>
+		{
+			let move = SpecialMove.TYPES[specialMoveName];
+			document.getElementById(move.Names["English"] + "Checkbox").parentElement.firstChild.nodeValue = move.Names[GetLanguage()];
+		}
+	);
 
 	document.getElementById("ResetButton").innerText = { "English": "Deselect all", "French": "Tout désélectionner" }[GetLanguage()];
 
@@ -584,5 +693,6 @@ function GetTypeIconLink(typeName)
 }
 
 GenerateTable();
+GenerateSpecialOptions();
 UpdateAllText();
 ApplyTheme();

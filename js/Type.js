@@ -1,5 +1,5 @@
 /*
- * Project : Types Table
+ * Project : Type Chart
  * Author : Jordan Folly
  * Date : 15/11/22
  */
@@ -305,28 +305,79 @@ class Type
 	 */
 	static selectedTypesNames = [];
 
+	GetAffinities()
+	{
+		let affinities = {};
+
+		Object.keys(Type.TYPES).forEach
+			(
+				attackingType =>
+				{
+					affinities[attackingType] = this.Affinities[attackingType] ?? 1;
+				}
+			);
+
+		return affinities;
+	}
+
+	GetCoverage()
+	{
+		let coverage = {};
+
+		Object.keys(Type.TYPES).forEach
+			(
+				defendingType =>
+				{
+					coverage[defendingType] = Type.TYPES[defendingType].GetAffinities(this.Names.English)[this.Names.English];
+				}
+			);
+
+		return coverage;
+	}
+
+	GetEffectiveness(...typeNames)
+	{
+		let coverage = this.GetCoverage();
+		let effectiveness = 1;
+
+		typeNames.forEach
+		(
+			typeName =>
+			{
+				effectiveness *= coverage[typeName];
+			}
+		);
+
+		return effectiveness;
+	}
+
 	/**
 	 * Get an array with the affinities of the selected types put together on the same pokémon
 	 * @type {Object.<string, number>} Name of the type with its effectiveness
 	 */
 	static get SelectedTypesAffinities()
 	{
-		let newType = new Type("", { });
+		if (Type.selectedTypesNames.length <= 0)
+		{
+			return {};
+		}
 
-		Object.keys(Type.TYPES).forEach
+		let affinities = Type.TYPES[Type.selectedTypesNames[0]].GetAffinities();
+
+		for (let i = 1; i < Type.selectedTypesNames.length; i++)
+		{
+			let currentTypeAffinities = Type.TYPES[Type.selectedTypesNames[i]].GetAffinities();
+
+			Object.keys(Type.TYPES).forEach
 			(
-				attackingType =>
+				typeName =>
 				{
-					newType.Affinities[attackingType] = 1;
-
-					for (let i = 0; i < Type.selectedTypesNames.length; i++)
-					{
-						newType.Affinities[attackingType] *= Type.TYPES[Type.selectedTypesNames[i]].Affinities[attackingType] ?? 1;
-					}
+					affinities[typeName] *= currentTypeAffinities[typeName];
 				}
 			);
+		}
 
-		return newType.Affinities;
+		return affinities;
 	}
 
 	/**
@@ -335,69 +386,49 @@ class Type
 	 */
 	static get SelectedTypesCoverage()
 	{
-		let newType = new Type("", {});
+		if (Type.selectedTypesNames.length <= 0)
+		{
+			return null;
+		}
 
-		Object.keys(Type.TYPES).forEach
+		let coverage = Type.TYPES[Type.selectedTypesNames[0]].GetCoverage();
+
+		for (let i = 1; i < Type.selectedTypesNames.length; i++)
+		{
+			let currentTypeCoverage = Type.TYPES[Type.selectedTypesNames[i]].GetCoverage();
+
+			Object.keys(Type.TYPES).forEach
 			(
-				defendingType =>
+				typeName =>
 				{
-					let bestMultiplier = 0;
-
-					Type.selectedTypesNames.forEach
-						(
-							attackingTypeName =>
-							{
-								let multiplier = Type.TYPES[defendingType].Affinities[attackingTypeName] ?? 1;
-
-								if (multiplier > bestMultiplier)
-								{
-									bestMultiplier = multiplier;
-								}
-							}
-						);
-
-					newType.Affinities[defendingType] = bestMultiplier;
+					if (currentTypeCoverage[typeName] > coverage[typeName])
+					{
+						coverage[typeName] = currentTypeCoverage[typeName];
+					}
 				}
 			);
+		}
 
-		return newType.Affinities;
+		return coverage;
 	}
 
 	/**
 	 * The names of the type in different languages
 	 * @type {Object.<string, string>} Name of the language in english with translation of the type in that language
 	 */
-	#names;
+	Names;
 
 	/**
 	 * All the affinities of this type to every type
 	 * @type {Object.<string, number>} Name of the type with its effectiveness
 	 */
-	#affinities;
+	Affinities;
 
 	/**
 	 * If the type has been chosen or not
 	 * @type {boolean}
 	 */
 	#selected = false;
-
-	/**
-	 * The names of the type in different languages
-	 * @type {Object.<string, string>} Name of the language in english with translation of the type in that language
-	 */
-	get Names()
-	{
-		return this.#names;
-	};
-
-	/**
-	 * All the affinities of this type to every type
-	 * @type {Object.<string, number>} Name of the type with its effectiveness
-	 */
-	get Affinities()
-	{
-		return this.#affinities;
-	};
 
 	/**
 	 * If the type has been chosen or not
@@ -415,16 +446,16 @@ class Type
 	{
 		this.#selected = value;
 
-		let button = document.getElementById(this.#names["English"] + "Button");
+		let button = document.getElementById(this.Names["English"] + "Button");
 
 		if (this.#selected)
 		{
-			Type.selectedTypesNames.push(this.#names.English);
+			Type.selectedTypesNames.push(this.Names.English);
 			button.classList.add("Selected");
 		}
 		else
 		{
-			Type.selectedTypesNames.splice(Type.selectedTypesNames.indexOf(this.#names.English), 1);
+			Type.selectedTypesNames.splice(Type.selectedTypesNames.indexOf(this.Names.English), 1);
 			button.classList.remove("Selected");
 		}
 	}
@@ -435,35 +466,7 @@ class Type
 	 */
 	constructor(names, affinities)
 	{
-		this.#names = names;
-		this.#affinities = affinities;
-	}
-
-	/**
-	 * Create a double type from two types
-	 * @param {Type} firstType
-	 * @param {Type} secondType
-	 * @returns {Type}
-	 */
-	static Combine(firstType, secondType)
-	{
-		let doubleType = new Type({ }, { });
-
-		for (let nameLanguage in firstType.Names)
-		{
-			doubleType.Names[nameLanguage] = firstType.Names[nameLanguage] + " / " + secondType.Names[nameLanguage];
-		}
-
-		for (let typeName in Type.TYPES)
-		{
-			let multiplier = (firstType.Affinities[typeName] ?? 1) * (secondType.Affinities[typeName] ?? 1);
-
-			if (multiplier != 1)
-			{
-				doubleType.Affinities[typeName] = multiplier;
-			}
-		}
-
-		return doubleType;
+		this.Names = names;
+		this.Affinities = affinities;
 	}
 }

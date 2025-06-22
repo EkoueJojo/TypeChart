@@ -1,7 +1,9 @@
 <!--
-	Project : Types Table
+	Project : Type Chart
 	Author : EkoueJojo
 	Date : 15/11/22
+
+	TODO : Ajouter le type stellaire
 -->
 
 <!DOCTYPE html>
@@ -22,12 +24,12 @@
 	<link rel="stylesheet" href="./css/index.css" type="text/css">
 	<link rel="manifest" href="./manifest.webmanifest">
 	<link rel="icon" type="image/x-icon" href="./img/Icons/AppIcon.png">
-	<title>Types Table</title>
+	<title>Type Chart</title>
 </head>
 
 <body>
 	<header>
-		<h1 id="AppTitle">Types Table</h1>
+		<h1 id="AppTitle">Type Chart</h1>
 		<nav>
 			<form method="dialog">
 				<button id="SettingsButton" onclick="OpenSettings()"><span>⚙️</span></button>
@@ -53,14 +55,80 @@
 						<option id="DarkThemeOption" value="dark">Dark</option>
 					</select></p></label></p>
 				</div>
+<!--Pokémon
+let pages = "Lance-Boue\nTourniquet\nGravité\nChamp Brumeux\nChamp Herbu\nChamp Psychique\nChamp Électrifié\nSoleil\nSoleil intense\nPluie\nPluie battante\nVent mystérieux\nAnti-Air\nFlying Press\nLyophilisation\nMyria-Flèches\nClairvoyance\nFlair\nGoudronnage\nOeil Miracle\nVol Magnétik\nAquabulle\nBoost Acier\nExpert Acier\nBrise Moule\nQuerelleur\nAbsorbe-Eau\nAbsorbe-Terre\nAbsorbe-Volt\nFiltre\nPrisme-Armure\nSolide Roc\nGarde Mystik\nHerbivore\nIgnifugé\nIsograisse\nLavabo\nLévitation\nMotorisé\nParatonnerre\nPeau Sèche\nSel Purificateur\nTorche\nBalle Fer\nBallon\nPoint de Mire";
+-->
+
+<!--Capacités
+- [x] Lyophilisation
+- [x] Myria-Flèches
+- [x] Flying Press
+-->
+
+<!--Conditions
+- [ ] Au sol
+- [ ] Clairvoyance / Flair / Oeil Miracle
+- [ ] Goudronnage
+- [ ] En l'air
+-->
+<!--Talents
+- [ ] Aquabulle
+- [ ] Boost Acier / Expert Acier
+- [ ] Brise Moule / Turbo Brasier / Téra-Voltage
+- [ ] Querelleur
+
+- [ ] Absorbe-Eau
+- [ ] Absorbe-Terre
+- [ ] Absorbe-Volt / Motorisé / Paratonnerre
+- [ ] Filtre / Solide Roc
+- [ ] Prisme-Armure
+- [ ] Garde Mystik
+- [ ] Herbivore
+- [ ] Ignifugé
+- [ ] Isograisse
+- [ ] Lavabo
+- [ ] Lévitation
+- [ ] Peau Sèche
+- [ ] Sel Purificateur
+- [ ] Torche
+-->
+<!--Objets
+- [ ] Point de Mire
+-->
+
+<!--Tout le monde-->
+
+<!--Météos
+- [ ] Soleil
+- [ ] Soleil intense
+- [ ] Pluie
+- [ ] Pluie battante
+
+- [ ] Vent mystérieux
+-->
+<!--Champs
+- [ ] Champ Herbu
+- [ ] Champ Psychique
+- [ ] Champ Électrifié
+
+- [ ] Champ Brumeux
+-->
+<!--Autres changements de terrain
+- [ ] Gravité
+-->
+<!--Capacités
+- [ ] Lance-Boue
+- [ ] Tourniquet
+-->
 			</dialog>
 		</nav>
 	</header>
 	<main>
 		<div id="ButtonsContainer">
 			<table>
-				<tbody id="TypesTable"></tbody>
+				<tbody id="TypeChart"></tbody>
 			</table>
+			<div id="SpecialAttributesContainer"></div>
 			<button id="ResetButton" onclick="ResetTypes()">Deselect all</button>
 		</div>
 		<div id="ResultsContainer">
@@ -90,6 +158,7 @@
 		</div>
 	</main>
 	<script src="./js/Type.js"></script>
+	<script src="./js/TypeAffectingAttribute.js"></script>
 	<script src="./js/view.js"></script>
 </body>
 
