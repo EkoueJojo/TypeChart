@@ -596,7 +596,7 @@ function CreateCoverageLine(multiplier, typesIcons)
 	switch (multiplier)
 	{
 		case "4":
-			multiplierTitle.innerText = { English: "Doubly super effective against", French: "Doublement super efficace contre" }[GetLanguage()];
+			multiplierTitle.innerText = { English: "Extremely effective against", French: "Hyper efficace contre" }[GetLanguage()];
 			break;
 		case "2":
 			multiplierTitle.innerText = { English: "Super effective against", French: "Super efficace contre" }[GetLanguage()];
@@ -608,7 +608,7 @@ function CreateCoverageLine(multiplier, typesIcons)
 			multiplierTitle.innerText = { English: "Not very effective against", French: "Pas très efficace contre" }[GetLanguage()];
 			break;
 		case "0.25":
-			multiplierTitle.innerText = { English: "Very little effective against", French: "Très peu efficace contre" }[GetLanguage()];
+			multiplierTitle.innerText = { English: "Mostly ineffective against", French: "Vraiment pas très efficace contre" }[GetLanguage()];
 			break;
 		case "0":
 			multiplierTitle.innerText = { English: "Ineffective against", French: "Inefficace contre" }[GetLanguage()];

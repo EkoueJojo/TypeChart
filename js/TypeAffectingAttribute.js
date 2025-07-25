@@ -1,16 +1,3 @@
-class TypeAffectingAttribute
-{
-	names;
-	// applyToAffinities;
-
-	// constructor(names, applyToAffinities = (type) => type)
-	constructor(names)
-	{
-		this.names = names;
-		// this.applyToAffinities = applyToAffinities;
-	}
-}
-
 class SpecialMove extends Type
 {
 	/**
@@ -141,9 +128,25 @@ class SpecialMove extends Type
 	}
 }
 
-class SpecialAbility extends TypeAffectingAttribute
+class SpecialAbility
 {
+	/**
+	 * If the ability can be ignored by Mold Breaker or an equivalent
+	 * @type {boolean}
+	 */
 	ignorable;
+
+	/**
+	 * The name of the attacker's ability
+	 * @type {string?}
+	 */
+	static selectedAttackerName = null;
+
+	/**
+	 * The name of the defender's ability
+	 * @type {string?}
+	 */
+	static selectedDefenderName = null;
 
 	static ATTRIBUTES =
 	{
@@ -151,9 +154,9 @@ class SpecialAbility extends TypeAffectingAttribute
 		(
 			{ "English": "Water Bubble", "French": "Aquabulle" }
 		),
-		"Steely Spirit / Steelworker": new SpecialAbility
+		"Steelworker": new SpecialAbility
 		(
-			{ "English": "Water Bubble", "French": "Boost Acier / Expert Acier" }
+			{ "English": "Steelworker / Steely Spirit", "French": "Expert Acier / Boost Acier" }
 		),
 		"Mold Breaker": new SpecialAbility
 		(
@@ -218,15 +221,11 @@ class SpecialAbility extends TypeAffectingAttribute
 		"Flash Fire": new SpecialAbility
 		(
 			{ "English": "Flash Fire", "French": "Torche" }
-		),
-		"Flash Fire": new SpecialAbility
-		(
-			{ "English": "Flash Fire", "French": "Torche" }
 		)
 	};
 }
 
-class StatusCondition extends TypeAffectingAttribute
+class StatusCondition
 {
 	static ATTRIBUTES =
 	{
@@ -254,53 +253,67 @@ class StatusCondition extends TypeAffectingAttribute
 
 	constructor(names)
 	{
-		super(names);
+		this.Names = names;
 	}
 }
 
-class TerrainChange extends TypeAffectingAttribute
+class FieldChange
 {
 	static ATTRIBUTES =
 	{
-		"Harsh Sunlight": new TerrainChange
-		(
-			{ "English": "Harsh Sunlight", "French": "Soleil" }
-		),
-		"Rain": new TerrainChange
-		(
-			{ "English": "Rain", "French": "Pluie" }
-		),
-		"Extremely Harsh Sunlight": new TerrainChange
-		(
-			{ "English": "Extremely Harsh Sunlight", "French": "Soleil intense" }
-		),
-		"Heavy Rain": new TerrainChange
-		(
-			{ "English": "Heavy Rain", "French": "Pluie Battante" }
-		),
-		"Strong Winds": new TerrainChange
-		(
-			{ "English": "Strong Winds", "French": "Vent Mystérieux" }
-		),
-		"Grassy Terrain": new TerrainChange
-		(
-			{ "English": "Grassy Terrain", "French": "Champ Herbu" }
-		),
-		"Electric Terrain": new TerrainChange
-		(
-			{ "English": "Electric Terrain", "French": "Champ Électrifié" }
-		),
-		"Misty Terrain": new TerrainChange
-		(
-			{ "English": "Misty Terrain", "French": "Champ Brumeux" }
-		),
-		"Psychic Terrain": new TerrainChange
-		(
-			{ "English": "Psychic Terrain", "French": "Champ Psychique" }
-		),
-		"Gravity": new TerrainChange
+		"Gravity": new FieldChange
 		(
 			{ "English": "Gravity", "French": "Gravité" }
 		)
 	};
+}
+
+class Weather extends FieldChange
+{
+	static ATTRIBUTES =
+	{
+		"Harsh Sunlight": new FieldChange
+		(
+			{ "English": "Harsh Sunlight", "French": "Soleil" }
+		),
+		"Rain": new FieldChange
+		(
+			{ "English": "Rain", "French": "Pluie" }
+		),
+		"Extremely Harsh Sunlight": new FieldChange
+		(
+			{ "English": "Extremely Harsh Sunlight", "French": "Soleil intense" }
+		),
+		"Heavy Rain": new FieldChange
+		(
+			{ "English": "Heavy Rain", "French": "Pluie Battante" }
+		),
+		"Strong Winds": new FieldChange
+		(
+			{ "English": "Strong Winds", "French": "Vent Mystérieux" }
+		)
+	}
+}
+
+class Terrain extends FieldChange
+{
+	static ATTRIBUTES =
+	{
+		"Grassy Terrain": new FieldChange
+		(
+			{ "English": "Grassy Terrain", "French": "Champ Herbu" }
+		),
+		"Electric Terrain": new FieldChange
+		(
+			{ "English": "Electric Terrain", "French": "Champ Électrifié" }
+		),
+		"Misty Terrain": new FieldChange
+		(
+			{ "English": "Misty Terrain", "French": "Champ Brumeux" }
+		),
+		"Psychic Terrain": new FieldChange
+		(
+			{ "English": "Psychic Terrain", "French": "Champ Psychique" }
+		)
+	}
 }
